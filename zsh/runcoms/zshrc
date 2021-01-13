@@ -1,0 +1,56 @@
+#
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Rhys Lloyd <justrhysism@gmail.com>
+#
+
+# Blueprint Env Config
+source "$HOME/.bluerc"
+
+#region Znap
+zstyle ':znap:*' plugins-dir "$ZDIR"
+source "$ZDIR/zsh-snap/znap.zsh"
+#endregion
+
+#region Prompt
+# Powerlevel10k: https://github.com/romkatv/powerlevel10k/#zinit
+znap prompt romkatv/powerlevel10k
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+#endregion
+
+#region Prezto
+znap clone sorin-ionescu/prezto
+source ~[prezto]/init.zsh
+#endregion
+
+#region Modules/Plugins
+znap source supercrabtree/k
+
+if type exa &>/dev/null; then 
+    znap source DarrinTisdale/zsh-aliases-exa
+fi
+#endregion
+
+#region Packages
+
+# 1Password
+if type op &>/dev/null; then 
+    znap eval op-completion "op completion zsh"; 
+fi
+
+# fnm
+if type op &>/dev/null; then 
+    znap eval fnm "fnm env"
+fi
+
+#endregion
+
+#region Functions
+#endregion
+
+#region Aliases
+alias nvm=fnm
+#endregion
