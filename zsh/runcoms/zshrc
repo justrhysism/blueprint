@@ -42,8 +42,13 @@ if type op &>/dev/null; then
 fi
 
 # fnm
-if type op &>/dev/null; then 
+if type fnm &>/dev/null; then 
     znap eval fnm "fnm env"
+fi
+
+# GitHub CLI
+if type go &>/dev/null; then 
+    znap eval fnm "gh completion -s zsh"
 fi
 
 #endregion

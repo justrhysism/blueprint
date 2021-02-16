@@ -35,7 +35,7 @@ mkdir -p \
   ${HOME}/bin \
   ${HOME}/Projects
 
-# Show Hidden Directories
+# Modify Hidden Directories
 setfile -a v ~/Desktop
 chflags nohidden ~/Desktop
 
@@ -46,7 +46,7 @@ chflags nohidden ~/Desktop
 
 #region Create Symlinks
 
-link_dotfile gitconfig
+# link_dotfile gitconfig
 
 #endregion
 
@@ -90,6 +90,12 @@ if [ ! -d "/Applications/Setapp.app" ]; then
 fi
 #endregion
 
+# Go Directory
+if type go &>/dev/null; then 
+  mkdir -p ${HOME}/go
+  chflags hidden ${HOME}/go
+fi
+
 #endregion
 
 #region Packages
@@ -106,6 +112,9 @@ fi
 # 1Password Signin
 eval $(op signin my); # TODO: Setup 1P to handle new machine use case
 
+# macOS
+defaults write com.apple.dock mru-spaces -bool false
+
 # Alfred
 defaults write com.runningwithcrayons.Alfred-Preferences syncfolder "~/Documents/Application Files/Alfred"
 
@@ -115,7 +124,7 @@ defaults write com.googlecode.iterm2 PrefsCustomFolder "~/Documents/Application 
 # Rectangle
 defaults write com.knollsoft.Rectangle launchOnLogin -bool true
 
-# Choosy
+# region Choosy
 defaults write com.choosyosx.Choosy launchAtLogin -bool true
 defaults write com.choosyosx.Choosy displayMenuBarItem -bool false
 
@@ -124,13 +133,16 @@ mkdir -p "${CHOOSY_LIB_DIR}"
 
 if [[ ! -f "${CHOOSY_LIB_DIR}/.key" ]]; then
   op get item Choosy --fields reg_email,reg_code --format csv | sed "s/,/\//" > .key
-
+fi
+#endregion
 #endregion
 
 #region Set Defaults
 
 # Browser
-brew install defaultbrowser && defaultbrowser choosy && brew uninstall defaultbrowser
+brew install defaultbrowser \
+  && defaultbrowser choosy \
+  && brew uninstall defaultbrowser
 
 #endregion
 
