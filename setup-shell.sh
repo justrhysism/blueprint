@@ -97,7 +97,7 @@ link_dotfile config.sh "" .bluerc
 
 #region Link Dotfiles
 log "Link Dotfiles"
-link_dotfile_dir zsh/runcoms
+# link_dotfile_dir zsh/runcoms -- this is now handled by Mackup
 link_dotfile p10k.zsh zsh/theme
 #endregion
 

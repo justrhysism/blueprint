@@ -119,30 +119,30 @@ defaults write com.apple.dock mru-spaces -bool false
 defaults write com.runningwithcrayons.Alfred-Preferences syncfolder "~/Documents/Application Files/Alfred"
 
 # iTerm2
-defaults write com.googlecode.iterm2 PrefsCustomFolder "~/Documents/Application Files/iTerm"
+# defaults write com.googlecode.iterm2 PrefsCustomFolder "~/Documents/Application Files/iTerm" # Handled by Mackup
 
 # Rectangle
-defaults write com.knollsoft.Rectangle launchOnLogin -bool true
+# defaults write com.knollsoft.Rectangle launchOnLogin -bool true # Handled by Mackup
 
 # region Choosy
-defaults write com.choosyosx.Choosy launchAtLogin -bool true
-defaults write com.choosyosx.Choosy displayMenuBarItem -bool false
+# defaults write com.choosyosx.Choosy launchAtLogin -bool true 
+# defaults write com.choosyosx.Choosy displayMenuBarItem -bool false
 
-CHOOSY_LIB_DIR="~/Library/Application Support/Choosy"
-mkdir -p "${CHOOSY_LIB_DIR}"
+# CHOOSY_LIB_DIR="~/Library/Application Support/Choosy"
+# mkdir -p "${CHOOSY_LIB_DIR}"
 
-if [[ ! -f "${CHOOSY_LIB_DIR}/.key" ]]; then
-  op get item Choosy --fields reg_email,reg_code --format csv | sed "s/,/\//" > .key
-fi
+# if [[ ! -f "${CHOOSY_LIB_DIR}/.key" ]]; then
+#   op get item Choosy --fields reg_email,reg_code --format csv | sed "s/,/\//" > .key
+# fi
 #endregion
 #endregion
 
 #region Set Defaults
 
 # Browser
-brew install defaultbrowser \
-  && defaultbrowser choosy \
-  && brew uninstall defaultbrowser
+# brew install defaultbrowser \
+#   && defaultbrowser choosy \
+#   && brew uninstall defaultbrowser
 
 #endregion
 
@@ -159,7 +159,7 @@ open "/Applications/Rectangle.app"
 open "/Applications/OneDrive.app" --hide --background
 
 # Open Choosy and hide preferences
-open "/Applications/Choosy.app"
+# open "/Applications/Choosy.app"
 
 # TODO: Figure out how to request Security > Privacy > A11y 
 osascript <<END
