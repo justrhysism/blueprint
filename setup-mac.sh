@@ -27,7 +27,6 @@ printf "\nSetting up system with latest toys ...\n\n"
 
 
 # Enable italic support
-#tic xterm-256color-italic.terminfo
 
 #region Directories Setup
 # Create folders
@@ -43,17 +42,11 @@ chflags nohidden ~/Desktop
 # chflags nohidden ~/Library
 #endregion
 
-
-#region Create Symlinks
-
-# link_dotfile gitconfig
-
-#endregion
-
 #region macOS and Xcode
 #printf "\nUpdating macOS\n" - Don't update automatically as we need to run fix script after a restart
 # sudo softwareupdate -i -a
 
+# Fix Xcode
 if [[ "$(xcode-select -p)" == "" ]]; then
   printf "\nInstalling Xcode\n"
   xcode-select --install
@@ -68,7 +61,7 @@ if ! command -v brew > /dev/null 2>&1; then
 fi
 
 printf "\nUpdating Brew\n"
-brew bundle install --cleanup
+brew bundle install
 
 # FZF - Install key bindings and fuzzy completion
 $(brew --prefix)/opt/fzf/install \
@@ -118,12 +111,6 @@ defaults write com.apple.dock mru-spaces -bool false
 # Alfred
 defaults write com.runningwithcrayons.Alfred-Preferences syncfolder "~/Documents/Application Files/Alfred"
 
-# iTerm2
-# defaults write com.googlecode.iterm2 PrefsCustomFolder "~/Documents/Application Files/iTerm" # Handled by Mackup
-
-# Rectangle
-# defaults write com.knollsoft.Rectangle launchOnLogin -bool true # Handled by Mackup
-
 # region Choosy
 # defaults write com.choosyosx.Choosy launchAtLogin -bool true 
 # defaults write com.choosyosx.Choosy displayMenuBarItem -bool false
@@ -149,8 +136,8 @@ defaults write com.runningwithcrayons.Alfred-Preferences syncfolder "~/Documents
 #region Start Applications
 
 # Open 1Password and hide
-open "/Applications/1Password 7.app" --hide --background
-osascript -e 'quit app "1Password 7"' > /dev/null 2>&1
+open "/Applications/1Password.app" --hide --background
+osascript -e 'quit app "1Password"' > /dev/null 2>&1
 
 open "/Applications/Alfred 4.app"
 
@@ -162,27 +149,27 @@ open "/Applications/OneDrive.app" --hide --background
 # open "/Applications/Choosy.app"
 
 # TODO: Figure out how to request Security > Privacy > A11y 
-osascript <<END
-  set timeoutSeconds to 2.000000
-  set uiScript to "click UI Element 15 of window \"Choosy\" of application process \"Choosy\""
-  my doWithTimeout( uiScript, timeoutSeconds )
+# osascript <<END
+#   set timeoutSeconds to 2.000000
+#   set uiScript to "click UI Element 15 of window \"Choosy\" of application process \"Choosy\""
+#   my doWithTimeout( uiScript, timeoutSeconds )
 
-  on doWithTimeout(uiScript, timeoutSeconds)
-    set endDate to (current date) + timeoutSeconds
-    repeat
-      try
-        run script "tell application \"System Events\"
-  " & uiScript & "
-  end tell"
-        exit repeat
-      on error errorMessage
-        if ((current date) > endDate) then
-          error "Can not " & uiScript
-        end if
-      end try
-    end repeat
-  end doWithTimeout
-END
+#   on doWithTimeout(uiScript, timeoutSeconds)
+#     set endDate to (current date) + timeoutSeconds
+#     repeat
+#       try
+#         run script "tell application \"System Events\"
+#   " & uiScript & "
+#   end tell"
+#         exit repeat
+#       on error errorMessage
+#         if ((current date) > endDate) then
+#           error "Can not " & uiScript
+#         end if
+#       end try
+#     end repeat
+#   end doWithTimeout
+# END
 
 #endregion
 
