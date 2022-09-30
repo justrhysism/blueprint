@@ -31,8 +31,8 @@ printf "\nSetting up system with latest toys ...\n\n"
 #region Directories Setup
 # Create folders
 mkdir -p \
-  ${HOME}/bin \
-  ${HOME}/Projects
+  "${HOME}/.local/bin" \
+  "${HOME}/Projects"
 
 # Modify Hidden Directories
 setfile -a v ~/Desktop
@@ -64,7 +64,7 @@ printf "\nUpdating Brew\n"
 brew bundle install
 
 # FZF - Install key bindings and fuzzy completion
-$(brew --prefix)/opt/fzf/install \
+"$(brew --prefix)"/opt/fzf/install \
   --no-update-rc \
   --key-bindings \
   --completion
@@ -85,8 +85,8 @@ fi
 
 # Go Directory
 if type go &>/dev/null; then 
-  mkdir -p ${HOME}/go
-  chflags hidden ${HOME}/go
+  mkdir -p "${HOME}/go"
+  chflags hidden "${HOME}/go"
 fi
 
 #endregion
@@ -102,14 +102,25 @@ fi
 
 #region Application Config
 
-# 1Password Signin
-eval $(op signin my); # TODO: Setup 1P to handle new machine use case
+# 1Password
+eval "$(op signin my)"; # TODO: Setup 1P to handle new machine use case
+
+# Configure 1Password as SSH Key manager
+# https://developer.1password.com/docs/ssh/get-started/#step-4-configure-your-ssh-or-git-client
+OP_LIB_DIR="${HOME}/Library/Group Containers/2BUA8C4S2C.com.1password/t/"
+OP_DIR="${HOME}/.1password"
+
+if [[ -d "${OP_LIB_DIR}" ]]; then
+  mkdir -p "${OP_DIR}"
+  rm -f "${OP_DIR}/agent.sock"
+  ln -s "${OP_LIB_DIR}/agent.sock" "${OP_DIR}/agent.sock"
+fi
 
 # macOS
 defaults write com.apple.dock mru-spaces -bool false
 
 # Alfred
-defaults write com.runningwithcrayons.Alfred-Preferences syncfolder "~/Documents/Application Files/Alfred"
+# defaults write com.runningwithcrayons.Alfred-Preferences syncfolder "${HOME}/Documents/Application Files/Alfred"
 
 # region Choosy
 # defaults write com.choosyosx.Choosy launchAtLogin -bool true 
@@ -139,7 +150,7 @@ defaults write com.runningwithcrayons.Alfred-Preferences syncfolder "~/Documents
 open "/Applications/1Password.app" --hide --background
 osascript -e 'quit app "1Password"' > /dev/null 2>&1
 
-open "/Applications/Alfred 4.app"
+open "/Applications/Alfred 5.app"
 
 open "/Applications/Rectangle.app"
 #open "/Applications/Setapp.app" --hide --background
